@@ -76,6 +76,9 @@
   <notepads>
   </notepads>
   <order>
+  <hop> <from>Get Purchase lines</from><to>PurchaseLinesxPurchases</to><enabled>Y</enabled> </hop>
+  <hop> <from>Get Purchases</from><to>PurchaseLinesxPurchases</to><enabled>Y</enabled> </hop>
+  <hop> <from>PurchaseLinesxPurchases</from><to>Json output</to><enabled>Y</enabled> </hop>
   </order>
   <step>
     <name>Get Purchase lines</name>
@@ -95,7 +98,7 @@
     <fields_name/>
     <collection>purchase_lines</collection>
     <json_field_name>purchase_line</json_field_name>
-    <json_query>&#x7b;&#x7d;</json_query>
+    <json_query>&#x7b; &#x24;query&#x3a; &#x7b;&#x7d;, &#x24;orderby&#x3a; &#x7b; purchase_id&#x3a; 1 &#x7d; &#x7d;</json_query>
     <auth_user/>
     <auth_password>Encrypted </auth_password>
     <auth_kerberos>N</auth_kerberos>
@@ -165,7 +168,189 @@
       </mongo_field>
     </mongo_fields>     <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>208</xloc>
+      <xloc>176</xloc>
+      <yloc>96</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>PurchaseLinesxPurchases</name>
+    <type>MergeJoin</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+<join_type>FULL OUTER</join_type>
+<step1>Get Purchase lines</step1>
+<step2>Get Purchases</step2>
+    <keys_1>
+      <key>purchase_id</key>
+    </keys_1>
+    <keys_2>
+      <key>purchase_id</key>
+    </keys_2>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>352</xloc>
+      <yloc>144</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Get Purchases</name>
+    <type>MongoDbInput</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <hostname>localhost</hostname>
+    <port>27017</port>
+    <use_all_replica_members>N</use_all_replica_members>
+    <db_name>Acme-Supermarket</db_name>
+    <fields_name/>
+    <collection>purchases</collection>
+    <json_field_name>json</json_field_name>
+    <json_query>&#x7b; &#x24;query&#x3a; &#x7b;&#x7d;, &#x24;orderby&#x3a; &#x7b; _id &#x3a; 1 &#x7d; &#x7d;</json_query>
+    <auth_user/>
+    <auth_password>Encrypted </auth_password>
+    <auth_kerberos>N</auth_kerberos>
+    <connect_timeout/>
+    <socket_timeout/>
+    <read_preference>primary</read_preference>
+    <output_json>N</output_json>
+    <query_is_pipeline>N</query_is_pipeline>
+    <execute_for_each_row>N</execute_for_each_row>
+
+    <mongo_fields>
+      <mongo_field>
+        <field_name>paymentDate</field_name>
+
+        <field_path>&#x24;.paymentDate</field_path>
+
+        <field_type>Date</field_type>
+
+      </mongo_field>
+      <mongo_field>
+        <field_name>deliveryDate</field_name>
+
+        <field_path>&#x24;.deliveryDate</field_path>
+
+        <field_type>Date</field_type>
+
+      </mongo_field>
+      <mongo_field>
+        <field_name>purchase_id</field_name>
+
+        <field_path>&#x24;._id</field_path>
+
+        <field_type>Integer</field_type>
+
+      </mongo_field>
+      <mongo_field>
+        <field_name>customer_id</field_name>
+
+        <field_path>&#x24;.customer_id</field_path>
+
+        <field_type>Integer</field_type>
+
+      </mongo_field>
+    </mongo_fields>     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>176</xloc>
+      <yloc>192</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Json output</name>
+    <type>JsonOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <outputValue>outputValue</outputValue>
+    <jsonBloc>purchases</jsonBloc>
+    <nrRowsInBloc>1</nrRowsInBloc>
+    <operation_type>writetofile</operation_type>
+    <compatibility_mode>N</compatibility_mode>
+    <encoding>UTF-8</encoding>
+    <addtoresult>N</addtoresult>
+    <file>
+      <name>&#x2f;home&#x2f;donzok&#x2f;Documentos&#x2f;AS-Star-Schema&#x2f;data-integration&#x2f;test-files&#x2f;purchaselinexpurchase</name>
+      <extention>json</extention>
+      <append>Y</append>
+      <split>N</split>
+      <haspartno>N</haspartno>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <create_parent_folder>N</create_parent_folder>
+      <DoNotOpenNewFileInit>N</DoNotOpenNewFileInit>
+      <servlet_output>N</servlet_output>
+      </file>
+    <fields>
+      <field>
+        <name>provide_id</name>
+        <element>provide_id</element>
+    </field>
+      <field>
+        <name>quantity</name>
+        <element>quantity</element>
+    </field>
+      <field>
+        <name>price</name>
+        <element>price</element>
+    </field>
+      <field>
+        <name>product_id</name>
+        <element>product_id</element>
+    </field>
+      <field>
+        <name>_id</name>
+        <element>_id</element>
+    </field>
+      <field>
+        <name>purchase_id</name>
+        <element>purchase_id</element>
+    </field>
+      <field>
+        <name>discounted</name>
+        <element>discounted</element>
+    </field>
+      <field>
+        <name>paymentDate</name>
+        <element>paymentDate</element>
+    </field>
+      <field>
+        <name>deliveryDate</name>
+        <element>deliveryDate</element>
+    </field>
+      <field>
+        <name>purchase_id_1</name>
+        <element>purchase_id_1</element>
+    </field>
+      <field>
+        <name>customer_id</name>
+        <element>customer_id</element>
+    </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>528</xloc>
       <yloc>144</yloc>
       <draw>Y</draw>
       </GUI>
