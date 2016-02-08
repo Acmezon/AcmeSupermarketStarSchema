@@ -257,7 +257,7 @@
     <fields_name/>
     <collection>provide</collection>
     <json_field_name>json</json_field_name>
-    <json_query>&#x7b;&#x24;query&#x3a; &#x7b;&#x22;deleted&#x22;&#x3a; false&#x7d;, &#x24;orderby&#x3a; &#x7b;&#x22;_id&#x22;&#x3a; 1&#x7d; &#x7d;</json_query>
+    <json_query>&#x7b;&#x24;query&#x3a; &#x7b;&#x7d;, &#x24;orderby&#x3a; &#x7b;&#x22;_id&#x22;&#x3a; 1&#x7d; &#x7d;</json_query>
     <auth_user/>
     <auth_password>Encrypted </auth_password>
     <auth_kerberos>N</auth_kerberos>
